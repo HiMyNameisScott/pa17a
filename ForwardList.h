@@ -68,12 +68,15 @@ private:
     virtual ~ForwardList();
     // copy assignment
     ForwardList& operator=(const ForwardList& rhs);
+
     // iterators
     iterator begin() const { return iterator(first); }
     iterator end() const { return iterator(); }
+
     // capacity
     bool empty() const { return begin() == end(); }
     size_type size() const { return count; }
+
     /// Clears the contents
     void clear();
     /// Inserts a value before pos
