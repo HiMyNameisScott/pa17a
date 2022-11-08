@@ -1,10 +1,10 @@
 #ifndef H_FORWARDLIST
 #define H_FORWARDLIST
-
-#include <initializer_list>
-#include <cstddef>
 #include <iterator>
-
+#include <cstddef>
+#include <initializer_list>
+#include <iostream>
+#include <iomanip>
 
 /// ---------------------------------------------------------------------------
 /// A ForwardList is a container that supports fast insertion and removal of
@@ -18,56 +18,65 @@
 /// erase()) from the list.
 /// ---------------------------------------------------------------------------
 
-class ForwardList {
+class ForwardList
+{
 protected:
-/// A ForwardList node.
-    struct Node {
-        int    info{};
-        Node*  link{};
+    /// A ForwardList node.
+    struct Node
+    {
+        int info{};
+        Node *link{};
     };
 
 public:
-/// An iterator for ForwardList containers.
-    class Iterator {
+    /// An iterator for ForwardList containers.
+    class Iterator
+    {
     public:
-// member types (required to integrate with standard library)
-    using iterator_category = std::forward_iterator_tag;
-    using value_type        = int;
-    using difference_type   = std::ptrdiff_t;
-    using pointer           = Node*;
-    using reference         = value_type&;
+        // member types (required to integrate with standard library)
+        using iterator_category = std::forward_iterator_tag;
+        using value_type = int;
+        using difference_type = std::ptrdiff_t;
+        using pointer = Node *;
+        using reference = value_type &;
 
-    Iterator(pointer ptr = nullptr) : current(ptr) {}
-    reference operator*() const { return current->info; }
-    pointer operator->() { return current; }
-    Iterator& operator++() { current = current->link; return *this; }
+        Iterator(pointer ptr = nullptr) : current(ptr) {}
+        reference operator*() const { return current->info; }
+        pointer operator->() { return current; }
+        Iterator &operator++()
+        {
+            current = current->link;
+            return *this;
+        }
 
-    friend bool operator==(const Iterator& lhs, const Iterator& rhs) {
-        return lhs.current == rhs.current;
-    }
+        friend bool operator==(const Iterator &lhs, const Iterator &rhs)
+        {
+            return lhs.current == rhs.current;
+        }
 
-    friend bool operator!=(const Iterator& lhs, const Iterator& rhs) {
-        return lhs.current != rhs.current;
-    }
+        friend bool operator!=(const Iterator &lhs, const Iterator &rhs)
+        {
+            return lhs.current != rhs.current;
+        }
 
-private:
-    pointer current;    ///< The current node.
-};
+    private:
+        pointer current; ///< The current node.
+    };
 
     // member types
     using value_type = int;
-    using size_type  = std::size_t;
-    using reference  = value_type&;
-    using iterator   = Iterator;
+    using size_type = std::size_t;
+    using reference = value_type &;
+    using iterator = Iterator;
 
     // ctors
-    ForwardList() = default;
-    ForwardList(const ForwardList& other);
-    ForwardList(const std::initializer_list<value_type>& ilist);
+    ForwardList();
+    ForwardList(const ForwardList &other);
+    ForwardList(const std::initializer_list<value_type> &ilist);
     // dtor
     virtual ~ForwardList();
     // copy assignment
-    ForwardList& operator=(const ForwardList& rhs);
+    ForwardList &operator=(const ForwardList &rhs);
 
     // iterators
     iterator begin() const { return iterator(first); }
@@ -80,22 +89,24 @@ private:
     /// Clears the contents
     void clear();
     /// Inserts a value before pos
-    iterator insert(iterator pos, const value_type& value);
+    iterator insert(iterator pos, const value_type &value);
     /// Erases an element at pos
     iterator erase(iterator pos);
 
 protected:
-    Node*     first{};  ///< pointer to the head node
-    size_type count{};  ///< number of nodes in list
+    Node *first{};     ///< pointer to the head node
+    size_type count{}; ///< number of nodes in list
 };
 
 /** NON-MEMBER FUNCTIONS **/
 
 /// Equality comparison operator.
-bool operator==(const ForwardList& lhs, const ForwardList& rhs);
+bool operator==(const ForwardList &lhs, const ForwardList &rhs);
 
 /// Inequality comparison operator.
-bool operator!=(const ForwardList& lhs, const ForwardList& rhs);
+bool operator!=(const ForwardList &lhs, const ForwardList &rhs);
 
+///
+std::ostream &operator<<(std::ostream &output, const ForwardList &list);
 
 #endif

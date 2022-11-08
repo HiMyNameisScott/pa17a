@@ -1,8 +1,12 @@
 #include "ForwardList.h"
+#include "ForwardList.cpp"
 
-#include <iostream>
 
 int main()
 {
-    std::cout << "hello world \n";
+    ForwardList test3 {10, 20, 30 ,40, 50};
+    
+    std::cout << test3 << std::endl;
+return 0;
 }
+
